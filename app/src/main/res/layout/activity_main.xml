@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/board_bg"
+    android:padding="12dp">
+
+    <!-- Top-left: the official app logo + title. Tap it to open My Drawings. -->
+    <LinearLayout
+        android:id="@+id/appTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:paddingEnd="8dp"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
+        android:clickable="true"
+        android:focusable="true"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/appLogoIcon"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="10dp"
+            android:src="@mipmap/ic_launcher"
+            android:contentDescription="My Drawings" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Drawing Joy"
+            android:fontFamily="casual"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@color/text_primary" />
+    </LinearLayout>
+
+    <!-- Top-right: Save, Share, More -->
+    <HorizontalScrollView
+        android:id="@+id/topActionsScroll"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:scrollbars="none"
+        android:fillViewport="false"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toEndOf="@id/appTitle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1">
+
+        <LinearLayout
+            android:id="@+id/topActions"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/btnSave"
+                style="@style/TopPillButton"
+                android:background="@drawable/bg_btn_filled"
+                android:drawableStart="@drawable/ic_save"
+                android:drawablePadding="8dp"
+                android:text="Save" />
+
+            <TextView
+                android:id="@+id/btnShare"
+                style="@style/TopPillButton"
+                android:background="@drawable/bg_btn_outline"
+                android:drawableStart="@drawable/ic_share"
+                android:drawablePadding="8dp"
+                android:text="Share" />
+
+            <TextView
+                android:id="@+id/btnMore"
+                style="@style/TopPillButton"
+                android:layout_marginEnd="0dp"
+                android:drawableStart="@drawable/ic_more"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:text="" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/topBarBarrier"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:barrierDirection="bottom"
+        app:constraint_referenced_ids="appTitle,topActionsScroll" />
+
+    <!-- Left column: colors card + size card (or text options while the Text tool is on) -->
+    <ScrollView
+        android:id="@+id/leftPanel"
+        android:layout_width="188dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:padding="4dp"
+        android:clipToPadding="false"
+        android:scrollbars="none"
+        app:layout_constraintTop_toBottomOf="@id/topBarBarrier"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/colorsPanelContent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Colors"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:textColor="@color/text_primary"
+                    android:layout_marginBottom="6dp" />
+
+                <!-- Colors, in a rounded box -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_panel"
+                    android:elevation="2dp"
+                    android:padding="10dp">
+
+                    <GridLayout
+                        android:id="@+id/colorGrid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:columnCount="3"
+                        android:useDefaultMargins="false" />
+                </LinearLayout>
+
+                <!-- Create-your-own-color button: deliberately OUTSIDE the box above -->
+                <TextView
+                    android:id="@+id/btnCreateColor"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/bg_btn_outline"
+                    android:gravity="center"
+                    android:text="+  Create Your Own Color"
+                    android:textColor="@color/text_primary"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:clickable="true"
+                    android:focusable="true" />
+
+                <!-- Size, in its own rounded box -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:orientation="vertical"
+                    android:background="@drawable/bg_panel"
+                    android:elevation="2dp"
+                    android:padding="12dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Size"
+                        android:textStyle="bold"
+                        android:textSize="13sp"
+                        android:textColor="@color/text_primary" />
+
+                    <SeekBar
+                        android:id="@+id/brushSizeSlider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:max="100"
+                        android:progress="20" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="6dp">
+
+                        <LinearLayout android:id="@+id/sizeXS" style="@style/SizeDotPreset">
+                            <FrameLayout android:layout_width="match_parent" android:layout_height="24dp">
+                                <View android:layout_width="5dp" android:layout_height="5dp" android:layout_gravity="center" android:background="@drawable/dot_dark" />
+                            </FrameLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="XS" android:textSize="10sp" android:textColor="@color/text_secondary" />
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/sizeSmall" style="@style/SizeDotPreset">
+                            <FrameLayout android:layout_width="match_parent" android:layout_height="24dp">
+                                <View android:layout_width="8dp" android:layout_height="8dp" android:layout_gravity="center" android:background="@drawable/dot_dark" />
+                            </FrameLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="S" android:textSize="10sp" android:textColor="@color/text_secondary" />
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/sizeMedium" style="@style/SizeDotPreset">
+                            <FrameLayout android:layout_width="match_parent" android:layout_height="24dp">
+                                <View android:layout_width="12dp" android:layout_height="12dp" android:layout_gravity="center" android:background="@drawable/dot_dark" />
+                            </FrameLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="M" android:textSize="10sp" android:textColor="@color/text_secondary" />
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/sizeLarge" style="@style/SizeDotPreset">
+                            <FrameLayout android:layout_width="match_parent" android:layout_height="24dp">
+                                <View android:layout_width="16dp" android:layout_height="16dp" android:layout_gravity="center" android:background="@drawable/dot_dark" />
+                            </FrameLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="L" android:textSize="10sp" android:textColor="@color/text_secondary" />
+                        </LinearLayout>
+
+                        <LinearLayout android:id="@+id/sizeXL" style="@style/SizeDotPreset">
+                            <FrameLayout android:layout_width="match_parent" android:layout_height="24dp">
+                                <View android:layout_width="21dp" android:layout_height="21dp" android:layout_gravity="center" android:background="@drawable/dot_dark" />
+                            </FrameLayout>
+                            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="XL" android:textSize="10sp" android:textColor="@color/text_secondary" />
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Text tool options (shown instead of the two cards above while Text is selected) -->
+            <LinearLayout
+                android:id="@+id/textOptionsPanel"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/bg_panel"
+                android:elevation="2dp"
+                android:padding="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    style="@style/SectionLabel"
+                    android:text="Text Options"
+                    android:layout_marginBottom="12dp" />
+
+                <TextView
+                    style="@style/SectionLabel"
+                    android:text="Text Size"
+                    android:layout_marginBottom="4dp" />
+
+                <SeekBar
+                    android:id="@+id/textSizeSlider"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="30" />
+
+                <TextView
+                    style="@style/SectionLabel"
+                    android:text="Text Color"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="6dp" />
+
+                <GridLayout
+                    android:id="@+id/textColorGrid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="3"
+                    android:useDefaultMargins="false" />
+
+                <TextView
+                    android:id="@+id/textToolHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="14dp"
+                    android:text="Tap anywhere on the canvas to place your text."
+                    android:textColor="@color/text_secondary"
+                    android:textSize="12sp"
+                    android:lineSpacingExtra="2dp" />
+
+                <TextView
+                    android:id="@+id/btnExitTextMode"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/bg_pill_accent"
+                    android:gravity="center"
+                    android:text="Done"
+                    android:textColor="@color/accent"
+                    android:textStyle="bold"
+                    android:textSize="13sp"
+                    android:clickable="true"
+                    android:focusable="true" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Drawing canvas -->
+    <FrameLayout
+        android:id="@+id/canvasContainer"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/bg_panel"
+        android:elevation="3dp"
+        android:padding="4dp"
+        app:layout_constraintTop_toBottomOf="@id/topBarBarrier"
+        app:layout_constraintBottom_toTopOf="@id/toolStrip"
+        app:layout_constraintStart_toEndOf="@id/leftPanel"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.mom.privatedrawing.DrawingView
+            android:id="@+id/drawingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/canvas_bg" />
+    </FrameLayout>
+
+    <!-- Bottom tool strip (sits under the canvas, like the reference) -->
+    <HorizontalScrollView
+        android:id="@+id/toolStrip"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/bg_panel"
+        android:elevation="3dp"
+        android:scrollbars="none"
+        app:layout_constraintStart_toEndOf="@id/leftPanel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:id="@+id/toolStripInner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:padding="6dp" />
+    </HorizontalScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
